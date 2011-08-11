@@ -110,7 +110,17 @@ module PaperTrail
 
       def record_create
         if switched_on?
-          send(self.class.versions_association_name).create merge_metadata(:event => 'create', :whodunnit => PaperTrail.whodunnit)
+          data = {
+            :event => 'create', 
+            :whodunnit => PaperTrail.whodunnit
+          }
+          # DM patch save the object on create
+          if true
+            data[:object] = attributes_to_string(self.attributes.reject do |key, value|
+              key == "updated_at" || key == "created_at"
+            end)
+          end
+          send(self.class.versions_association_name).create merge_metadata(data)
         end
       end
 
