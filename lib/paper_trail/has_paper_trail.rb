@@ -184,6 +184,10 @@ module PaperTrail
         object.attributes.to_yaml
       end
 
+      def attributes_to_string(attributes)
+       attributes.to_yaml
+      end
+
       def changed_notably?
         notably_changed.any?
       end
